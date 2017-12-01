@@ -11,8 +11,10 @@ import (
 	"github.com/zanjs/y-mugg-v2/config"
 )
 
-var appConfig = config.Config.App
-var jwtConfig = config.Config.JWT
+var (
+	appConfig = config.Config.App
+	jwtConfig = config.Config.JWT
+)
 
 type disk struct {
 	read  string

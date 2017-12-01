@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 	"github.com/zanjs/y-mugg-v2/app/models"
 )
@@ -28,33 +26,7 @@ func (ctl ArticlesController) GetAll(c echo.Context) error {
 		queryparams models.QueryParams
 		err         error
 	)
-
-	qps := c.QueryParams()
-
-	limitq := c.QueryParam("limit")
-	offsetq := c.QueryParam("offset")
-	startTimeq := c.QueryParam("start_time")
-	endTime := c.QueryParam("end_time")
-
-	limit, _ := strconv.Atoi(limitq)
-	offset, _ := strconv.Atoi(offsetq)
-	fmt.Println(qps)
-	fmt.Println(limit)
-	fmt.Println(offset)
-
-	if limit == 0 {
-		limit = 10
-	}
-
-	queryparams.Limit = limit
-	queryparams.Offset = offset
-	queryparams.StartTime = startTimeq
-	queryparams.EndTime = endTime
-
-	queryparams2 := c.Get("queryparams")
-
-	fmt.Println("queryparams2")
-	fmt.Println(queryparams2)
+	queryparams = ctl.GetQueryParams(c)
 
 	articles, err = models.GetArticles(queryparams)
 	if err != nil {
@@ -67,11 +39,12 @@ func (ctl ArticlesController) GetAll(c echo.Context) error {
 // Get is get one article
 func (ctl ArticlesController) Get(c echo.Context) error {
 	var (
-		article models.Article
-		err     error
+		article    models.Article
+		pathparams models.PathParams
+		err        error
 	)
-	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
-	article, err = models.GetArticleById(id)
+	pathparams = ctl.GetPathParam(c)
+	article, err = models.GetArticleById(pathparams.ID)
 	if err != nil {
 		return ctl.ErrorResponse(c, http.StatusForbidden, err.Error())
 	}
@@ -80,12 +53,9 @@ func (ctl ArticlesController) Get(c echo.Context) error {
 
 // Create is create article
 func (ctl ArticlesController) Create(c echo.Context) error {
-	user := c.Get("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	userID := int(claims["id"].(float64))
+	user := ctl.GetUser(c)
 	article := new(models.Article)
-
-	article.UserID = userID
+	article.UserID = user.ID
 	article.Title = c.FormValue("title")
 	article.Content = c.FormValue("content")
 
@@ -106,13 +76,14 @@ func (ctl ArticlesController) Update(c echo.Context) error {
 	article.Title = c.FormValue("title")
 	article.Content = c.FormValue("content")
 
-	// get the param id
-	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
-	m, err := models.GetArticleById(id)
+	var (
+		pathParams models.PathParams
+	)
+	pathParams = ctl.GetPathParam(c)
+	m, err := models.GetArticleById(pathParams.ID)
 	if err != nil {
 		return c.JSON(http.StatusUnprocessableEntity, err)
 	}
-
 	// update article data
 	err = m.UpdateArticle(article)
 	if err != nil {

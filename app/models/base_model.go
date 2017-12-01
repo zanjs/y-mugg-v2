@@ -28,3 +28,8 @@ type QueryParams struct {
 	WareroomID int    `json:"wareroom_id"`
 	ProductID  int    `json:"product_id"`
 }
+
+// PathParams is
+type PathParams struct {
+	ID uint64 `json:"id"`
+}

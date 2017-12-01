@@ -17,7 +17,7 @@ func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
-// ServerHeader middleware adds a `Server` header to the response.
+// QueryParam middleware adds a `queryparams` header to the request.
 func QueryParam(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var (

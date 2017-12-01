@@ -2,8 +2,11 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
+	"github.com/zanjs/y-mugg-v2/app/models"
 )
 
 // ResourceController is
@@ -107,4 +110,50 @@ func (ctl Controller) SuccessResponse(c echo.Context, data interface{}) error {
 // ErrorResponse is
 func (ctl Controller) ErrorResponse(c echo.Context, statusCode int, message string) error {
 	return c.JSON(statusCode, ctl.buildErrorData(message))
+}
+
+// GetQueryParams is get queryParams
+func (ctl Controller) GetQueryParams(c echo.Context) models.QueryParams {
+	var (
+		queryparams models.QueryParams
+	)
+
+	startTimeq := c.QueryParam("start_time")
+	endTime := c.QueryParam("end_time")
+
+	limit, _ := strconv.Atoi(c.QueryParam("limit"))
+	offset, _ := strconv.Atoi(c.QueryParam("offset"))
+
+	if limit == 0 {
+		limit = 10
+	}
+
+	queryparams.Limit = limit
+	queryparams.Offset = offset
+	queryparams.StartTime = startTimeq
+	queryparams.EndTime = endTime
+	return queryparams
+}
+
+// GetPathParam is
+func (ctl Controller) GetPathParam(c echo.Context) models.PathParams {
+
+	var (
+		pathparams models.PathParams
+	)
+	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
+	pathparams.ID = id
+	return pathparams
+}
+
+// GetUser is get user 获取用户
+func (ctl Controller) GetUser(c echo.Context) models.User {
+	var (
+		user models.User
+	)
+	userJwt := c.Get("user").(*jwt.Token)
+	claims := userJwt.Claims.(jwt.MapClaims)
+	userID := int(claims["id"].(float64))
+	user.ID = userID
+	return user
 }
