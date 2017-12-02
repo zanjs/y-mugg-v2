@@ -14,8 +14,8 @@ type UserController struct {
 	Controller
 }
 
-// GetAl is get all users
-func (ctl UserController) GetAl(c echo.Context) error {
+// GetAll is get all users
+func (ctl UserController) GetAll(c echo.Context) error {
 	var (
 		users []models.User
 		err   error
@@ -27,18 +27,19 @@ func (ctl UserController) GetAl(c echo.Context) error {
 	return ctl.ResponseSuccess(c, users)
 }
 
-// get one user
-func ShowUser(c echo.Context) error {
+// Get is get one user
+func (ctl UserController) Get(c echo.Context) error {
 	var (
-		user models.User
-		err  error
+		user       models.User
+		pathparams models.PathParams
+		err        error
 	)
-	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
-	user, err = models.GetUserById(id)
+	pathparams = ctl.GetPathParam(c)
+	user, err = models.GetUserById(pathparams.ID)
 	if err != nil {
-		return c.JSON(http.StatusForbidden, err)
+		return ctl.ResponseError(c, http.StatusForbidden, err.Error())
 	}
-	return c.JSON(http.StatusOK, user)
+	return ctl.ResponseSuccess(c, user)
 }
 
 //create user

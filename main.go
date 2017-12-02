@@ -50,9 +50,9 @@ func main() {
 	v1.Use(middleware.JWT([]byte(jwtConfig.Secret)))
 
 	// Users
-	v1.GET("/users", controllers.ArticlesController{}.GetAll)
+	v1.GET("/users", controllers.UserController{}.GetAll)
 	v1.POST("/users", controllers.CreateUser)
-	v1.GET("/users/:id", controllers.ShowUser)
+	v1.GET("/users/:id", controllers.UserController{}.Get)
 	v1.PUT("/users/:id", controllers.UpdateUser)
 	v1.DELETE("/users/:id", controllers.DeleteUser)
 
