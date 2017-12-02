@@ -13,11 +13,6 @@ type ArticlesController struct {
 	Controller
 }
 
-// NewArticlesController is
-func NewArticlesController() ArticlesController {
-	return ArticlesController{}
-}
-
 // GetAll is get all articles
 func (ctl ArticlesController) GetAll(c echo.Context) error {
 
@@ -30,10 +25,10 @@ func (ctl ArticlesController) GetAll(c echo.Context) error {
 
 	articles, err = models.GetArticles(queryparams)
 	if err != nil {
-		return ctl.ErrorResponse(c, http.StatusForbidden, err.Error())
+		return ctl.ResponseError(c, http.StatusForbidden, err.Error())
 	}
 
-	return ctl.SuccessResponse(c, articles)
+	return ctl.ResponseSuccess(c, articles)
 }
 
 // Get is get one article
@@ -46,9 +41,9 @@ func (ctl ArticlesController) Get(c echo.Context) error {
 	pathparams = ctl.GetPathParam(c)
 	article, err = models.GetArticleById(pathparams.ID)
 	if err != nil {
-		return ctl.ErrorResponse(c, http.StatusForbidden, err.Error())
+		return ctl.ResponseError(c, http.StatusForbidden, err.Error())
 	}
-	return ctl.SuccessResponse(c, article)
+	return ctl.ResponseSuccess(c, article)
 }
 
 // Create is create article
@@ -62,10 +57,10 @@ func (ctl ArticlesController) Create(c echo.Context) error {
 	err := models.CreateArticle(article)
 
 	if err != nil {
-		return ctl.ErrorResponse(c, http.StatusUnprocessableEntity, err.Error())
+		return ctl.ResponseError(c, http.StatusUnprocessableEntity, err.Error())
 	}
 
-	return ctl.SuccessResponse(c, article)
+	return ctl.ResponseSuccess(c, article)
 }
 
 // Update is update article

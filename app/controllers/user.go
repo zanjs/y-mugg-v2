@@ -9,17 +9,22 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// get all users
-func AllUsers(c echo.Context) error {
+// UserController is
+type UserController struct {
+	Controller
+}
+
+// GetAl is get all users
+func (ctl UserController) GetAl(c echo.Context) error {
 	var (
 		users []models.User
 		err   error
 	)
 	users, err = models.GetUsers()
 	if err != nil {
-		return c.JSON(http.StatusForbidden, err)
+		return ctl.ResponseError(c, http.StatusForbidden, err.Error())
 	}
-	return c.JSON(http.StatusOK, users)
+	return ctl.ResponseSuccess(c, users)
 }
 
 // get one user

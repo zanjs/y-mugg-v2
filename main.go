@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/zanjs/y-mugg-v2/app/controllers"
 	mid "github.com/zanjs/y-mugg-v2/app/middleware"
+	"github.com/zanjs/y-mugg-v2/app/monitor"
 	"github.com/zanjs/y-mugg-v2/config"
 )
 
@@ -16,25 +16,11 @@ var (
 	jwtConfig = config.Config.JWT
 )
 
-type disk struct {
-	read  string
-	write string
-}
-
-func customHTTPErrorHandler(err error, c echo.Context) {
-	code := http.StatusInternalServerError
-	if he, ok := err.(*echo.HTTPError); ok {
-		code = he.Code
-	}
-	err = controllers.Controller{}.ErrorResponse(c, code, err.Error())
-	c.Logger().Error(err)
-}
-
 func main() {
 
 	e := echo.New()
 
-	e.HTTPErrorHandler = customHTTPErrorHandler
+	e.HTTPErrorHandler = monitor.CustomHTTPErrorHandler
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -64,7 +50,7 @@ func main() {
 	v1.Use(middleware.JWT([]byte(jwtConfig.Secret)))
 
 	// Users
-	v1.GET("/users", controllers.AllUsers)
+	v1.GET("/users", controllers.ArticlesController{}.GetAll)
 	v1.POST("/users", controllers.CreateUser)
 	v1.GET("/users/:id", controllers.ShowUser)
 	v1.PUT("/users/:id", controllers.UpdateUser)

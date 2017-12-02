@@ -1,18 +1,18 @@
 app:
   env: local
   httpaddr: 127.0.0.1
-  httpport: 3001
+  httpport: 19988
 
 db:
   driver: mysql
-  host: 172.20.7.101
+  host: 127.0.0.1
   port: 3306
   name: golang_rest
   user: root
   password: root
 
 jwt:
-  secret: mysecretkey
+  secret: mysecVerifyPKCS1v15retkey
 
 
 qm: 

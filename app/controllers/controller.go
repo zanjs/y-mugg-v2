@@ -102,13 +102,13 @@ func (ctl Controller) buildErrorData(message string) map[string]interface{} {
 	}
 }
 
-// SuccessResponse is
-func (ctl Controller) SuccessResponse(c echo.Context, data interface{}) error {
+// ResponseSuccess is
+func (ctl Controller) ResponseSuccess(c echo.Context, data interface{}) error {
 	return c.JSON(200, ctl.buildSuccessData(data))
 }
 
-// ErrorResponse is
-func (ctl Controller) ErrorResponse(c echo.Context, statusCode int, message string) error {
+// ResponseError is
+func (ctl Controller) ResponseError(c echo.Context, statusCode int, message string) error {
 	return c.JSON(statusCode, ctl.buildErrorData(message))
 }
 
