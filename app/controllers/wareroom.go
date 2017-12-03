@@ -8,8 +8,13 @@ import (
 	"github.com/zanjs/y-mugg-v2/app/models"
 )
 
-// AllWarerooms is get all warerooms
-func AllWarerooms(c echo.Context) error {
+// WareroomController is
+type WareroomController struct {
+	Controller
+}
+
+// GetAll is get all warerooms
+func (ctl WareroomController) GetAll(c echo.Context) error {
 	var (
 		warerooms []models.Wareroom
 		err       error
@@ -21,8 +26,8 @@ func AllWarerooms(c echo.Context) error {
 	return c.JSON(http.StatusOK, warerooms)
 }
 
-// ShowWareroom is get one wareroom
-func ShowWareroom(c echo.Context) error {
+// Get is get one wareroom
+func (ctl WareroomController) Get(c echo.Context) error {
 	var (
 		wareroom models.Wareroom
 		err      error
@@ -35,8 +40,8 @@ func ShowWareroom(c echo.Context) error {
 	return c.JSON(http.StatusOK, wareroom)
 }
 
-// CreateWareroom wareroom
-func CreateWareroom(c echo.Context) error {
+// Create is wareroom
+func (ctl WareroomController) Create(c echo.Context) error {
 	wareroom := new(models.Wareroom)
 	wareroom.Title = c.FormValue("title")
 	wareroom.Numbering = c.FormValue("numbering")
@@ -50,8 +55,8 @@ func CreateWareroom(c echo.Context) error {
 	return c.JSON(http.StatusCreated, wareroom)
 }
 
-// UpdateWareroom is update wareroom
-func UpdateWareroom(c echo.Context) error {
+// Update is update wareroom
+func (ctl WareroomController) Update(c echo.Context) error {
 	// Parse the content
 	wareroom := new(models.Wareroom)
 
@@ -79,8 +84,8 @@ func UpdateWareroom(c echo.Context) error {
 	return c.JSON(http.StatusOK, m)
 }
 
-//delete wareroom
-func DeleteWareroom(c echo.Context) error {
+// Delete is wareroom
+func (ctl WareroomController) Delete(c echo.Context) error {
 	var err error
 
 	// get the param id

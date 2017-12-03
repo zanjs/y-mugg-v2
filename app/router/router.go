@@ -66,17 +66,17 @@ func InitRoute() {
 
 	// Products
 	v1.GET("/products", controllers.ProductController{}.GetAll)
-	v1.POST("/products", controllers.CreateProduct)
-	v1.GET("/products/:id", controllers.ShowProduct)
-	v1.PUT("/products/:id", controllers.UpdateProduct)
-	v1.DELETE("/products/:id", controllers.DeleteProduct)
+	v1.POST("/products", controllers.ProductController{}.Create)
+	v1.GET("/products/:id", controllers.ProductController{}.Get)
+	v1.PUT("/products/:id", controllers.ProductController{}.Update)
+	v1.DELETE("/products/:id", controllers.ProductController{}.Delete)
 
 	// Wareroom
-	v1.GET("/warerooms", controllers.AllWarerooms)
-	v1.POST("/warerooms", controllers.CreateWareroom)
-	v1.GET("/warerooms/:id", controllers.ShowWareroom)
-	v1.PUT("/warerooms/:id", controllers.UpdateWareroom)
-	v1.DELETE("/warerooms/:id", controllers.DeleteWareroom)
+	v1.GET("/warerooms", controllers.WareroomController{}.GetAll)
+	v1.POST("/warerooms", controllers.WareroomController{}.Create)
+	v1.GET("/warerooms/:id", controllers.WareroomController{}.Get)
+	v1.PUT("/warerooms/:id", controllers.WareroomController{}.Update)
+	v1.DELETE("/warerooms/:id", controllers.WareroomController{}.Delete)
 
 	// qm 库存销量更新
 	v1.GET("/records", controllers.AllRecordsPage)

@@ -27,8 +27,8 @@ func (ctl ProductController) GetAll(c echo.Context) error {
 	return c.JSON(http.StatusOK, products)
 }
 
-// get one product
-func ShowProduct(c echo.Context) error {
+// Get is one product
+func (ctl ProductController) Get(c echo.Context) error {
 	var (
 		product models.Product
 		err     error
@@ -41,8 +41,8 @@ func ShowProduct(c echo.Context) error {
 	return c.JSON(http.StatusOK, product)
 }
 
-// CreateProduct is product
-func CreateProduct(c echo.Context) error {
+// Create is create product
+func (ctl ProductController) Create(c echo.Context) error {
 
 	product := new(models.Product)
 
@@ -63,8 +63,8 @@ func CreateProduct(c echo.Context) error {
 	return c.JSON(http.StatusCreated, product)
 }
 
-// UpdateProduct is update product
-func UpdateProduct(c echo.Context) error {
+// Update is update product
+func (ctl ProductController) Update(c echo.Context) error {
 	// Parse the content
 	product := new(models.Product)
 
@@ -92,8 +92,8 @@ func UpdateProduct(c echo.Context) error {
 	return c.JSON(http.StatusOK, m)
 }
 
-//delete product
-func DeleteProduct(c echo.Context) error {
+//Delete is product
+func (ctl ProductController) Delete(c echo.Context) error {
 	var err error
 
 	// get the param id
