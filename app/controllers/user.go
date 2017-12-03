@@ -42,8 +42,8 @@ func (ctl UserController) Get(c echo.Context) error {
 	return ctl.ResponseSuccess(c, user)
 }
 
-//create user
-func CreateUser(c echo.Context) error {
+//Create is user
+func (ctl UserController) Create(c echo.Context) error {
 	user := new(models.User)
 
 	user.Username = c.FormValue("username")
@@ -59,8 +59,8 @@ func CreateUser(c echo.Context) error {
 	return c.JSON(http.StatusCreated, user)
 }
 
-//update user
-func UpdateUser(c echo.Context) error {
+//Update is update user
+func (ctl UserController) Update(c echo.Context) error {
 	// Parse the content
 	user := new(models.User)
 
@@ -84,8 +84,8 @@ func UpdateUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, m)
 }
 
-//delete user
-func DeleteUser(c echo.Context) error {
+//Delete is user
+func (ctl UserController) Delete(c echo.Context) error {
 	var err error
 
 	// get the param id
@@ -105,6 +105,5 @@ func hashPassword(input string) string {
 	if err != nil {
 		panic(err)
 	}
-
 	return string(hashedPassword)
 }

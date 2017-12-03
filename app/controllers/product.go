@@ -9,8 +9,13 @@ import (
 	"github.com/zanjs/y-mugg-v2/app/models"
 )
 
-// get all products
-func AllProducts(c echo.Context) error {
+// ProductController is
+type ProductController struct {
+	Controller
+}
+
+// GetAll is all products
+func (ctl ProductController) GetAll(c echo.Context) error {
 	var (
 		products []models.Product
 		err      error
