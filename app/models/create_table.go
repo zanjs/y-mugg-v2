@@ -6,6 +6,6 @@ import (
 
 //CreateTable user
 func CreateTable() error {
-	gorm.MysqlConn().AutoMigrate(&User{}, &Article{}, &Product{}, &Wareroom{}, &Record{}, &Inventory{})
+	gorm.MysqlConn().AutoMigrate(&User{}, &Article{}, &Product{}, &Wareroom{}, &Record{}, &Inventory{}, &Sale{})
 	return nil
 }

@@ -29,6 +29,12 @@ type QueryParams struct {
 	ProductID  int    `json:"product_id"`
 }
 
+// QueryParamsTime is
+type QueryParamsTime struct {
+	StartTime time.Time `json:"start_time"`
+	EndTime   time.Time `json:"end_time"`
+}
+
 // PathParams is
 type PathParams struct {
 	ID uint64 `json:"id"`

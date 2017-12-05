@@ -39,7 +39,8 @@ func InitRoute() {
 
 	e.POST("/user/add", controllers.UserController{}.Create)
 
-	e.GET("/records/jobs", controllers.AllProductWareroom)
+	e.GET("/records/jobs", controllers.JobController{}.SyncQnventoryV1)
+	e.GET("/jobs/sync_qnventory", controllers.JobController{}.SyncQnventory)
 
 	v0 := e.Group("/v0")
 
@@ -77,6 +78,23 @@ func InitRoute() {
 	v1.GET("/warerooms/:id", controllers.WareroomController{}.Get)
 	v1.PUT("/warerooms/:id", controllers.WareroomController{}.Update)
 	v1.DELETE("/warerooms/:id", controllers.WareroomController{}.Delete)
+
+	// 库存
+	v1.GET("/inventorys", controllers.InventoryController{}.GetAll)
+	v1.POST("/inventorys", controllers.WareroomController{}.Create)
+	v1.GET("/inventorys/:id", controllers.WareroomController{}.Get)
+	v1.PUT("/inventorys/:id", controllers.WareroomController{}.Update)
+	v1.DELETE("/inventorys/:id", controllers.WareroomController{}.Delete)
+
+	// 销量记录
+	v1.GET("/sales", controllers.SaleController{}.GetAll)
+	v1.POST("/sales", controllers.WareroomController{}.Create)
+	v1.GET("/sales/:id", controllers.WareroomController{}.Get)
+	v1.PUT("/sales/:id", controllers.WareroomController{}.Update)
+	v1.DELETE("/sales/:id", controllers.WareroomController{}.Delete)
+
+	// 库存销量统计
+	v1.GET("/statistics", controllers.SattisticsController{}.WhereTime)
 
 	// qm 库存销量更新
 	v1.GET("/records", controllers.AllRecordsPage)

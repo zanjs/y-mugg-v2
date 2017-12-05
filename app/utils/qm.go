@@ -28,7 +28,7 @@ func Parameter(method string, qmProduct models.QMProduct) models.QMRequest {
 	qmparam.Timestamp = time.Now().Format("2006-01-02 15:04:05")
 	qmparam.Version = qm.Version
 
-	fmt.Println(qmparam)
+	// fmt.Println(qmparam)
 
 	// APPKey     string `json:"app_key"`
 	// CustomerID string `json:"customerid"`
@@ -54,8 +54,8 @@ func Parameter(method string, qmProduct models.QMProduct) models.QMRequest {
 		fmt.Println(typ.Field(i).Name, typ.Field(i).Tag.Get("json"), value.Field(i).Interface())
 	}
 
-	fmt.Println(str)
-	fmt.Println("strURL:", strURL)
+	// fmt.Println(str)
+	// fmt.Println("strURL:", strURL)
 
 	value2 := reflect.ValueOf(qmProduct)
 	typ2 := reflect.TypeOf(qmProduct)
@@ -75,11 +75,11 @@ func Parameter(method string, qmProduct models.QMProduct) models.QMRequest {
 
 	xml += "</criteria></criteriaList></request>"
 
-	fmt.Println("xml:", xml)
+	// fmt.Println("xml:", xml)
 
 	restr := secret + str + xml + secret
 
-	fmt.Println("restr: ", restr)
+	// fmt.Println("restr: ", restr)
 
 	// md5Ctx := md5.New()
 	data := []byte(restr)
@@ -87,12 +87,12 @@ func Parameter(method string, qmProduct models.QMProduct) models.QMRequest {
 	restrMD52 := fmt.Sprintf("%x", restrMD5)
 
 	sign := strings.ToUpper(restrMD52)
-	fmt.Println("restr: md5", restrMD52)
-	fmt.Println("restr: md5 大写", sign)
+	// fmt.Println("restr: md5", restrMD52)
+	// fmt.Println("restr: md5 大写", sign)
 
 	strURL = apiURL + "?sign=" + sign + strURL
 
-	fmt.Println("strURL: sign", strURL)
+	// fmt.Println("strURL: sign", strURL)
 
 	var qmRequest models.QMRequest
 

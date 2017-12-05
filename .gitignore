@@ -20,3 +20,4 @@ tags
 .glide/
 .DS_Store
 y-mugg-v2
+*.sql

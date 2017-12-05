@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo"
-	"github.com/zanjs/y-mugg/app/models"
+	"github.com/zanjs/y-mugg-v2/app/models"
 )
 
 // ServerHeader middleware adds a `Server` header to the response.
