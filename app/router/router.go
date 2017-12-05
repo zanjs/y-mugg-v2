@@ -88,14 +88,13 @@ func InitRoute() {
 
 	// 销量记录
 	v1.GET("/sales", controllers.SaleController{}.GetAll)
-	v1.POST("/sales", controllers.WareroomController{}.Create)
-	v1.GET("/sales/:id", controllers.WareroomController{}.Get)
-	v1.PUT("/sales/:id", controllers.WareroomController{}.Update)
-	v1.DELETE("/sales/:id", controllers.WareroomController{}.Delete)
+	// v1.POST("/sales", controllers.WareroomController{}.Create)
+	// v1.GET("/sales/:id", controllers.WareroomController{}.Get)
+	v1.PUT("/sales/:id", controllers.SaleController{}.Update)
+	// v1.DELETE("/sales/:id", controllers.WareroomController{}.Delete)
 
 	// 库存销量统计
 	v1.GET("/statistics", controllers.SattisticsController{}.WhereTime)
-
 	// qm 库存销量更新
 	v1.GET("/records", controllers.AllRecordsPage)
 	v1.GET("/records/all", controllers.AllRecords)

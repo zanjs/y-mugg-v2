@@ -85,6 +85,7 @@ func (ctl SattisticsController) WhereTime(c echo.Context) error {
 
 			sattistic.SalesQuantity = saleQuantity
 			sattistic.InventoryQuantity = inventory.Quantity
+			sattistic.CreatedAt = inventory.CreatedAt
 
 			Sattistics = append(Sattistics, sattistic)
 		}

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo"
 	"github.com/zanjs/y-mugg-v2/app/models"
@@ -53,4 +54,29 @@ func (ctl SaleController) GetAllWhereTime(c echo.Context) error {
 	}
 
 	return ctl.ResponseSuccess(c, sales)
+}
+
+// Update is update sales
+func (ctl SaleController) Update(c echo.Context) error {
+	// Parse the content
+	data := new(models.Sale)
+
+	quantity, _ := strconv.Atoi(c.FormValue("quantity"))
+
+	data.Quantity = quantity
+
+	// get the param id
+	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
+	m, err := models.GetSaleByID(id)
+	if err != nil {
+		return c.JSON(http.StatusUnprocessableEntity, err)
+	}
+
+	// update record data
+	err = m.UpdateSale(data)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, err)
+	}
+
+	return c.JSON(http.StatusOK, m)
 }
