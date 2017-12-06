@@ -125,6 +125,7 @@ func (ctl Controller) GetQueryParams(c echo.Context) models.QueryParams {
 	offset, _ := strconv.Atoi(c.QueryParam("offset"))
 	wareroomID, _ := strconv.Atoi(c.QueryParam("wareroom_id"))
 	productID, _ := strconv.Atoi(c.QueryParam("product_id"))
+	day, _ := strconv.Atoi(c.QueryParam("day"))
 
 	if limit == 0 {
 		limit = 10
@@ -136,6 +137,7 @@ func (ctl Controller) GetQueryParams(c echo.Context) models.QueryParams {
 	queryparams.EndTime = endTime
 	queryparams.ProductID = productID
 	queryparams.WareroomID = wareroomID
+	queryparams.Day = day
 	return queryparams
 }
 

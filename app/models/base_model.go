@@ -26,6 +26,7 @@ type QueryParams struct {
 	StartTime  string `json:"start_time"`
 	EndTime    string `json:"end_time"`
 	WareroomID int    `json:"wareroom_id"`
+	Day        int    `json:"day"`
 	ProductID  int    `json:"product_id"`
 }
 

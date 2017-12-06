@@ -54,6 +54,7 @@ func (ctl SattisticsController) WhereTime(c echo.Context) error {
 			fmt.Println(v2)
 			wID := v2.ID
 			var sales []models.Sale
+			var salesDay []models.Sale
 
 			var qyps models.QueryParams
 
@@ -61,6 +62,7 @@ func (ctl SattisticsController) WhereTime(c echo.Context) error {
 			qyps.EndTime = queryparams.EndTime
 			qyps.ProductID = pID
 			qyps.WareroomID = wID
+			qyps.Day = queryparams.Day
 
 			var inventory models.Inventory
 
@@ -70,6 +72,7 @@ func (ctl SattisticsController) WhereTime(c echo.Context) error {
 			inventory, err = services.InventoryServices{}.GetByPId(inventory)
 
 			sales, err = services.SaleServices{}.WhereTime(qyps)
+			salesDay, err = services.SaleServices{}.WhereDay(qyps)
 
 			if err != nil {
 				fmt.Println("查询 where sales time err: ", err, sales)
@@ -81,11 +84,19 @@ func (ctl SattisticsController) WhereTime(c echo.Context) error {
 				saleQuantity = saleQuantity + v3.Quantity
 			}
 
+			saleMean := 0
+
+			for _, v3 := range salesDay {
+				fmt.Println("v3: ", v3)
+				saleMean = saleMean + v3.Quantity
+			}
+
 			sattistic := models.Sattistic{}
 
 			sattistic.SalesQuantity = saleQuantity
 			sattistic.InventoryQuantity = inventory.Quantity
 			sattistic.CreatedAt = inventory.CreatedAt
+			sattistic.Mean = saleMean
 
 			Sattistics = append(Sattistics, sattistic)
 		}
