@@ -77,8 +77,8 @@ func QMHTTPPostV2(qmRequest models.QMRequest, inventory models.Inventory) {
 
 	fmt.Println("记录商品信息 Items :", inventory)
 
-	// oldRecord, oErr := models.GetRecordLast(record.WareroomID, record.ProductID)
 	oldInventory, oErr := services.InventoryServices{}.GetByPId(inventory)
+	// oldInventory, oErr := models.GetInventoryByID(inventory.ID)
 
 	if oErr != nil {
 		fmt.Println("查询旧数据：err:", oErr)
@@ -102,13 +102,19 @@ func QMHTTPPostV2(qmRequest models.QMRequest, inventory models.Inventory) {
 	fmt.Println("新库存：", quantity)
 
 	if oldQuantity == quantity {
+		fmt.Println("不更新库存：", quantity)
 		return
 	}
+	oldInventory.Quantity = quantity
+	err = services.InventoryServices{}.Update(oldInventory)
+	// data := new(models.Inventory)
+	// data.Quantity = quantity
+	// data.ID = oldInventory.ID
+	// err = oldInventory.UpdateInventory(data)
 
+	fmt.Println("更新库存 oldQuantity < quantity 状态：", err)
 	if oldQuantity < quantity {
-		oldInventory.Quantity = quantity
-		err := services.InventoryServices{}.Update(oldInventory)
-		fmt.Println("更新库存 oldQuantity < quantity 状态：", err)
+		fmt.Println("库存增加了：", err)
 		return
 	}
 

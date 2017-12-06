@@ -64,7 +64,7 @@ func (sev InventoryServices) Update(m models.Inventory) error {
 	m.UpdatedAt = time.Now()
 
 	tx := gorm.MysqlConn().Begin()
-	if err = tx.Save(&m).Error; err != nil {
+	if err = tx.Model(&m).Update("quantity", m.Quantity).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
