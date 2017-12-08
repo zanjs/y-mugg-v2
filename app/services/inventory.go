@@ -23,13 +23,35 @@ func (sev InventoryServices) GetAll(q models.QueryParams) ([]models.Inventory, m
 	page.Limit = q.Limit
 	page.Offset = q.Offset
 
+	pID := q.ProductID
+	wID := q.WareroomID
+
 	tx := gorm.MysqlConn().Begin()
 
 	if page.Offset == 0 {
-		err = tx.Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Count(&page.Count).Error
+
+		if pID == 0 && wID == 0 {
+			err = tx.Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Count(&page.Count).Error
+		} else if pID != 0 && wID != 0 {
+			err = tx.Where("product_id = ? AND wareroom_id = ?", pID, wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Count(&page.Count).Error
+		} else if pID != 0 {
+			err = tx.Where("product_id = ?", pID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Count(&page.Count).Error
+		} else if wID != 0 {
+			err = tx.Where("wareroom_id = ?", wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Count(&page.Count).Error
+		}
+
 	} else {
 
-		err = tx.Preload("Wareroom").Preload("Product").Order("id desc").Offset(page.Offset * page.Limit).Limit(page.Limit).Find(&datas).Error
+		if pID == 0 && wID == 0 {
+			err = tx.Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Error
+		} else if pID != 0 && wID != 0 {
+			err = tx.Where("product_id = ? AND wareroom_id = ?", pID, wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Error
+		} else if pID != 0 {
+			err = tx.Where("product_id = ?", pID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Error
+		} else if wID != 0 {
+			err = tx.Where("wareroom_id = ?", wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Error
+		}
+
 	}
 
 	if err != nil {

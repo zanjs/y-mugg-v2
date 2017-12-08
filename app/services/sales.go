@@ -17,7 +17,7 @@ type (
 // GetAll is
 func (sev SaleServices) GetAll(q models.QueryParams) ([]models.Sale, models.PageModel, error) {
 	var (
-		sales []models.Sale
+		datas []models.Sale
 		page  models.PageModel
 		// queryParams models.QueryParams
 		err error
@@ -34,37 +34,37 @@ func (sev SaleServices) GetAll(q models.QueryParams) ([]models.Sale, models.Page
 	if page.Offset == 0 {
 
 		if pID == 0 && wID == 0 {
-			err = tx.Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&sales).Count(&page.Count).Error
+			err = tx.Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Count(&page.Count).Error
 		} else if pID != 0 && wID != 0 {
-			err = tx.Where("product_id = ? AND wareroom_id = ?", pID, wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&sales).Count(&page.Count).Error
+			err = tx.Where("product_id = ? AND wareroom_id = ?", pID, wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Count(&page.Count).Error
 		} else if pID != 0 {
-			err = tx.Where("product_id = ?", pID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&sales).Count(&page.Count).Error
+			err = tx.Where("product_id = ?", pID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Count(&page.Count).Error
 		} else if wID != 0 {
-			err = tx.Where("wareroom_id = ?", wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&sales).Count(&page.Count).Error
+			err = tx.Where("wareroom_id = ?", wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Count(&page.Count).Error
 		}
 
 	} else {
 
 		if pID == 0 && wID == 0 {
-			err = tx.Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&sales).Error
+			err = tx.Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Error
 		} else if pID != 0 && wID != 0 {
-			err = tx.Where("product_id = ? AND wareroom_id = ?", pID, wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&sales).Error
+			err = tx.Where("product_id = ? AND wareroom_id = ?", pID, wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Error
 		} else if pID != 0 {
-			err = tx.Where("product_id = ?", pID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&sales).Error
+			err = tx.Where("product_id = ?", pID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Error
 		} else if wID != 0 {
-			err = tx.Where("wareroom_id = ?", wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&sales).Error
+			err = tx.Where("wareroom_id = ?", wID).Preload("Wareroom").Preload("Product").Order("id desc").Limit(page.Limit).Find(&datas).Error
 		}
 
 	}
 
 	if err != nil {
 		tx.Rollback()
-		return sales, page, err
+		return datas, page, err
 	}
 
 	tx.Commit()
 
-	return sales, page, err
+	return datas, page, err
 }
 
 // Create is
