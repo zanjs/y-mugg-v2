@@ -34,7 +34,7 @@ func (ctl ProductController) Get(c echo.Context) error {
 		err     error
 	)
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
-	product, err = models.GetProductById(id)
+	product, err = models.GetProductByID(id)
 	if err != nil {
 		return c.JSON(http.StatusForbidden, err)
 	}
@@ -51,8 +51,11 @@ func (ctl ProductController) Create(c echo.Context) error {
 	sortV := c.FormValue("sort")
 	sort, _ := strconv.Atoi(sortV)
 	fmt.Println(sort)
-
+	box, _ := strconv.Atoi(c.FormValue("box"))
+	exceed, _ := strconv.Atoi(c.FormValue("exceed"))
 	product.Sort = sort
+	product.Box = box
+	product.Exceed = exceed
 
 	err := models.CreateProduct(product)
 
@@ -74,11 +77,16 @@ func (ctl ProductController) Update(c echo.Context) error {
 	sortV := c.FormValue("sort")
 	sort, _ := strconv.Atoi(sortV)
 
+	box, _ := strconv.Atoi(c.FormValue("box"))
+	exceed, _ := strconv.Atoi(c.FormValue("exceed"))
+
 	product.Sort = sort
+	product.Box = box
+	product.Exceed = exceed
 
 	// get the param id
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
-	m, err := models.GetProductById(id)
+	m, err := models.GetProductByID(id)
 	if err != nil {
 		return c.JSON(http.StatusUnprocessableEntity, err)
 	}
@@ -98,7 +106,7 @@ func (ctl ProductController) Delete(c echo.Context) error {
 
 	// get the param id
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
-	m, err := models.GetProductById(id)
+	m, err := models.GetProductByID(id)
 	if err != nil {
 		return c.JSON(http.StatusForbidden, err)
 	}

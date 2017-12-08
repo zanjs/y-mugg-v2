@@ -12,6 +12,8 @@ type (
 		BaseModel
 		Title        string `json:"title" gorm:"type:varchar(100)"`
 		ExternalCode string `json:"external_code" gorm:"varchar(100);not null;unique"`
+		Box          int    `json:"box"`
+		Exceed       int    `json:"exceed"`
 		Sort         int    `json:"sort"`
 	}
 	// QMProduct is
@@ -46,6 +48,8 @@ func (m *Product) UpdateProduct(data *Product) error {
 	m.Title = data.Title
 	m.ExternalCode = data.ExternalCode
 	m.Sort = data.Sort
+	m.Box = data.Box
+	m.Exceed = data.Exceed
 
 	tx := gorm.MysqlConn().Begin()
 	if err = tx.Save(&m).Error; err != nil {
@@ -70,8 +74,8 @@ func (m Product) DeleteProduct() error {
 	return err
 }
 
-// GetProductById is
-func GetProductById(id uint64) (Product, error) {
+// GetProductByID is
+func GetProductByID(id uint64) (Product, error) {
 	var (
 		product Product
 		err     error
